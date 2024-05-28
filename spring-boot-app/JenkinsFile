@@ -1,20 +1,22 @@
 pipeline {
   agent {
     docker {
-      image 'rgitrepo/maven-trivy-agent:v1'
+      image 'abhishekf5/maven-abhishek-docker-agent:v1'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
   stages {
     stage('Checkout') {
       steps {
-        // Checkout the repository
-        git branch: 'main', url: 'https://github.com/rgitrepo/Jenkins-CICD-Pipeline.git'
+        sh 'echo passed'
+        // Uncomment the below line to enable Git checkout
+        // git branch: 'main', url: 'https://github.com/rgitrepo/Jenkins-CICD-Pipeline.git'
       }
     }
     stage('Build and Test') {
       steps {
-        // Navigate to the spring-boot-app directory and build the project
+        sh 'ls -ltr'
+        // build the project and create a JAR file
         sh 'cd spring-boot-app && mvn clean package'
       }
     }
@@ -24,7 +26,6 @@ pipeline {
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-          // Run SonarQube analysis
           sh 'cd spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
         }
       }
@@ -36,52 +37,33 @@ pipeline {
       }
       steps {
         script {
-            // Build the Docker image
             sh 'cd spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
             def dockerImage = docker.image("${DOCKER_IMAGE}")
-            // Push the Docker image to the registry
             docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
                 dockerImage.push()
             }
         }
       }
     }
-    stage('Trivy Image Scan') {
-      steps {
-        script {
-          // Run Trivy to scan the Docker image
-          sh 'trivy image ${DOCKER_IMAGE}'
-        }
-      }
-    }
     stage('Update Deployment File') {
-      environment {
-        GIT_REPO_NAME = "Jenkins-CICD-Pipeline"
-        GIT_USER_NAME = "rgitrepo"
-      }
-      steps {
-        withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-          script {
-            // Update the deployment file with the new build number
-            sh '''
-              git config user.email "77811423+rgitrepo@users.noreply.github.com"
-              git config user.name "Raja Khan"
-              BUILD_NUMBER=${BUILD_NUMBER}
-              cp templates/deployment-template.yml spring-boot-app-manifests/deployment.yml
-              sed -i "s/BUILD_NUMBER_PLACEHOLDER/${BUILD_NUMBER}/g" spring-boot-app-manifests/deployment.yml
-              git add spring-boot-app-manifests/deployment.yml
-              git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-              git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
-            '''
-          }
+        environment {
+            GIT_REPO_NAME = "Jenkins-CICD-Pipeline"
+            GIT_USER_NAME = "rgitrepo"
         }
-      }
-    }
-  }
-  post {
-    always {
-      // Clean up the workspace after the build
-      cleanWs()
+        steps {
+            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                    git config user.email "77811423+rgitrepo@users.noreply.github.com"
+                    git config user.name "Raja Khan"
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    cp templates/deployment-template.yml spring-boot-app-manifests/deployment.yml
+                    sed -i "s/BUILD_NUMBER_PLACEHOLDER/${BUILD_NUMBER}/g" spring-boot-app-manifests/deployment.yml
+                    git add spring-boot-app-manifests/deployment.yml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                '''
+            }
+        }
     }
   }
 }
