@@ -4,7 +4,8 @@
 
 
 
-![Jenkins End-to-End CICD Pipeline 7](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/e3a7ac26-327d-4507-b9b9-33a23874d8df)
+![image](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/66575891-edf8-4041-ada7-9b4fdab5ff5a)
+
 
 
 
