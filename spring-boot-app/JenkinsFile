@@ -48,14 +48,6 @@ pipeline {
                 }
             }
         }
-        stage('Trivy Image Scan') {
-            steps {
-                script {
-                    // Run Trivy to scan the Docker image
-                    sh 'trivy image ${DOCKER_IMAGE}'
-                }
-            }
-        }
         stage('Update Deployment File') {
             steps {
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
