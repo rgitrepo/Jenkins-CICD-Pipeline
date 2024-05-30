@@ -112,9 +112,6 @@ We can type the entire pipeline steps or have the steps in a Jenkinsfile and giv
 
 Not needed as Maven is part of the Docker image. If Maven wasn't part of the image, we'd need to install the plugin here in Jenkins. We can create our own images with Maven in it. Currently, we're using the one Abhishek provided. To see the image stored at Docker Hub, see the Jenkinsfile.
 
-## Trivy Pipeline Plugin
-
-Not needed as Trivy is also part of the Docker image. (Not installed in the image. May add later)
 
 ## Docker Pipeline Plugin
 
