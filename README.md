@@ -261,15 +261,20 @@ Go to Jenkins and click on Manage Genkins -> Credentials -> System -> Global cre
 Click on Add Credentials button
 
 Under Kind select Secret text from the dropdown.
+
 Paste the generated credentials from SonarQube to Secrets here in Jenkins.
+
 ID can be named SonarQube.
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/c59e6db1-1b3c-488b-b06c-e17f4ca0411a)
+
+![10-sonarqube-credentials-in-jenkins](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/5b0905dd-e997-484c-9039-d0fff3b05a34)
+
 
 
 Click Create
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/ccb0c6a4-920a-409a-ac8d-d289fd742eda)
+![11-sonarqube-gloabal-cred](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/635c3fcc-38e4-43ac-897f-4d7d0415a995)
+
 
 
 ## Docker Slave Configuration on EC2 Instance
