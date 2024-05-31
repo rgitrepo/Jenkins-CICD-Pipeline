@@ -93,7 +93,8 @@ ps -ef | grep jenkins
 ```
 
 Output:
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/a0cac2c9-1493-4c0a-9aa3-2e21722fbc71)
+![image](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/888263bd-6ff0-43dd-9c9b-5e89b47d56a6)
+
 
 ### Click on Install suggested plugins
 
