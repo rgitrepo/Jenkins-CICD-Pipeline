@@ -7,7 +7,7 @@ pipeline {
     }
     environment {
         DOCKER_IMAGE = "rgitrepo/ultimate-cicd:${BUILD_NUMBER}"
-        SONAR_URL = "http://54.162.224.183:9000"
+        SONAR_URL = "http://54.209.195.50:9000"
         GIT_REPO_NAME = "Jenkins-CICD-Pipeline"
         GIT_USER_NAME = "rgitrepo"
     }
