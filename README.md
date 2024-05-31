@@ -120,22 +120,36 @@ This file can have any name. Notice the capital 'F" in JenkinsFile name.
 
 Click on "+ New Item" to create a new Pipeline.
 
-![1 Pipeline Config](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/41c48e70-39fe-4830-aeab-00285438c46e)
+![image](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/d5c3d155-fd3a-4ebc-a9d2-54d6695197b4)
 
+
+### Specify the Jenkinsfile for the Pipeline
 
 ![2 Pipeline Config](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/cf103133-cef3-4e1c-8827-81f414458175)
 
+Definition: Pipeline script from SCM
+
+SCM: Git
+
+Repository URL: https://github.com/rgitrepo/Jenkins-CICD-Pipeline
+
+Credentials: None (because this is a public repository)
+
+Branch: Main
+
+Script Path: spring-boot-app/JenkinsFile
 
 
+![2-jenkins-jenkinsfile-path](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/581b04d9-1b21-4e66-8af8-c47840752020)
 
+
+![3-jenkins-jenkinsfile-path](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/afe1ef68-b2f5-4d61-97e2-3fc1ac4cb995)
 
 
 
 # Maven Pipeline Plugin
 Not needed as Maven in part of the Docker image. If Maven wasn't part of the image we'd need to install the plugin here in Jenkins then. We can create our own images with Maven in it. Currently we're using the one Abhishek provided. To see the image stored at Docker Hub see the jenkinsFile.
 
-# Trivy Pipeline Plugin
-Not needed as Trivy is also part of Docker image. (Not installed in the image. May add later)
 
 # Docker Pipeline Plugin
 ## Install the Docker Pipeline plugin in Jenkins:
