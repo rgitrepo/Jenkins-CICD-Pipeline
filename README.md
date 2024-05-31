@@ -370,10 +370,24 @@ Go to the JenkinsFile and updated the ec2 ip address for SonarQube.
 
     environment {
         DOCKER_IMAGE = "rgitrepo/ultimate-cicd:${BUILD_NUMBER}"
-        SONAR_URL = "http:**//<ec2-ip>**:9000"
+        SONAR_URL = "http://<ec2-ip>:9000"
         GIT_REPO_NAME = "Jenkins-CICD-Pipeline"
         GIT_USER_NAME = "rgitrepo"
     }
+
+### Run the Jenkins Pipeline
+
+Go into the Jenkins pipeline and click on 'Build Now'.
+
+Most pipelines have small errors that need fixing before they run. If it's the case fix those errors.
+
+### Verify the image has been pushed to Docker Hub
+
+Once the pipeline has run see if the image has been build and pushed to Docker Hub.
+- Go to docker hub account and look for the image.
+- It can also be checked on the EC2 instance by typing 'docker images'.
+
+
 
 
 # CD
@@ -434,17 +448,7 @@ kubectl get pods -n operators
 
 
 
-### Run the Jenkins Pipeline
 
-Go into the Jenkins pipeline and click on 'Build Now'.
-
-Most pipelines have small errors that need fixing before they run. If it's the case fix those errors.
-
-### Verify the image has been pushed to Docker Hub
-
-Once the pipeline has run see if the image has been build and pushed to Docker Hub.
-- Go to docker hub account and look for the image.
-- It can also be checked on the EC2 instance by typing 'docker images'.
 
 
 ## Deploy Cluster on Kubernetes using ArgoCD
