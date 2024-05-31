@@ -349,16 +349,16 @@ Secret: ****** (paste the copied token)
 ID: github
 
 
+![15-github-cred](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/c7d2800d-fa01-43f6-b959-2b34972ccdfc)
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/20a6f8ae-897b-4010-a2d4-f098a16926b2)
 
+![16-sonar-docker-github-creds](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/69457a4a-0705-4837-9a86-32696ce62919)
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/ef7129e5-4b4b-4623-9986-792ed2e443ef)
 
 
 ### Jenkins Restart
 
-Once you are done with the above steps, it is better to restart Jenkins.
+Since the plugins and credentials have been updated in Jenkins it's time to restart it.
 
 ```
 http://<ec2-instance-public-ip>:8080/restart
