@@ -364,8 +364,16 @@ Since the plugins and credentials have been updated in Jenkins it's time to rest
 http://<ec2-instance-public-ip>:8080/restart
 ```
 
+### Update IP address of SonarQube on EC2 Instance
 
+Go to the JenkinsFile and updated the ec2 ip address for SonarQube. 
 
+    environment {
+        DOCKER_IMAGE = "rgitrepo/ultimate-cicd:${BUILD_NUMBER}"
+        SONAR_URL = "http://<ec2-ip>:9000"
+        GIT_REPO_NAME = "Jenkins-CICD-Pipeline"
+        GIT_USER_NAME = "rgitrepo"
+    }
 
 
 # CD
