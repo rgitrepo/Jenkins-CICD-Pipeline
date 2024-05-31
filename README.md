@@ -171,7 +171,8 @@ Wait for the Jenkins to be restarted.
    - In the Available tab, search for "SonarQube Scanner".
    - Select the plugin and click the Install button.
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/e38a81dd-7cf9-45f6-a73c-fe797583feee)
+![4-sonarqube-scanner](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/37830462-7276-4c6a-9423-d042245db9e0)
+
 
 # SonarQube Installation on EC2 Instance
 It can be installed on any server. For an organization it probably will be an internal server and with a private IP address.
