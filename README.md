@@ -125,8 +125,6 @@ Click on "+ New Item" to create a new Pipeline.
 
 ### Specify the Jenkinsfile for the Pipeline
 
-![2 Pipeline Config](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/cf103133-cef3-4e1c-8827-81f414458175)
-
 Definition: Pipeline script from SCM
 
 SCM: Git
@@ -193,7 +191,8 @@ apt install unzip
 adduser sonarqube
 ```
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4fd8a7df-9aff-4225-8e96-68f1971c0245)
+![5-sonarqube-on-ec2-instance](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/440b510e-e970-40fc-a79d-abc1c23b68d0)
+
 
 Use the below commands one by one while proceeding.
 ```
