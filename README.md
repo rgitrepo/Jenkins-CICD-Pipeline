@@ -330,7 +330,11 @@ ID: docker-cred (same in Jenkisfile. If this ID name is changed then jenkinsFile
 
 In git go to icon on top right and under it select Settings -> Developer Settings -> Personal access tokens -> Tokens (classic) > Generate New Token (classic) 
 
-In Note type 'jenkins' as the name.
+In Note 'jenkins' as the name.
+
+
+![14-github-cred](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/38ef3ee8-442a-403b-aa84-ea732d91e046)
+
 
 copy the generated token.
 
@@ -338,7 +342,13 @@ Go into Jenkins Dashboard -> Manage Jenkins -> Credentials -> System - Global cr
 
 Click on Add Credentials
 
-Select Kind as "Secret text" as Github has moved away from ID and passwords to secret tokens.
+Kind: Secret text (Github has moved away from ID and passwords to secret tokens)
+
+Secret: ****** (paste the copied token)
+
+ID: github
+
+
 
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/20a6f8ae-897b-4010-a2d4-f098a16926b2)
 
