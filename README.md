@@ -305,18 +305,25 @@ No installation needed. We also could user Argo Image Updater but it's not a too
 
 
 ## Docker Hub Credentials for Jenkins
-Credentials needed for Jenkins to update the docker image on Docker Hub.
 
-
+Credentials of Docker Hub are needed on Jenkins so that from Jenkins the new image is automatically pushed to Docker Hub.
 
 
 Username is docker hub name and ID is 'docker-cred' which is also specified in the jenkinsFile. If this ID name is changed then jenkinsFile should also be updated to match the new name.
 
+Kind: Username with password
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/40fc834e-de96-4c06-a748-f934eb8b6c83)
+Username: rgitrepo (use your Docker Hub name)
+
+Password: ********  (use your Docker Hub password)
+
+ID: docker-cred (same in Jenkisfile. If this ID name is changed then jenkinsFile should also be updated to match the new name.)
 
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4645fd92-fe45-41f5-b666-06501dd3d800)
+![12-dockerhub-global-cred](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/1ad11189-8288-40ad-8708-b6a4dd498156)
+
+
+![13-sonar-docker-creds](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/bbb829a1-1de7-4983-ad88-23b1cfd7ce8b)
 
 
 ## Git Hub Credentials for Jenkins
