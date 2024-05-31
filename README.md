@@ -288,7 +288,7 @@ sudo apt update
 sudo apt install docker.io -y
 ```
  
-### Grant Jenkins user and Ubuntu user permission to docker deamon.
+### Grant Jenkins user and Ubuntu user permission to Docker daemon.
 
 ```
 sudo su - 
@@ -297,17 +297,8 @@ usermod -aG docker ubuntu
 systemctl restart docker
 ```
 
-Once you are done with the above steps, it is better to restart Jenkins.
+The docker agent configuration is now completed.
 
-```
-http://<ec2-instance-public-ip>:8080/restart
-```
-
-
-The docker agent configuration is now successful.
-
-
-# CD
 
 ## Shell Script
 No installation needed. We also could user Argo Image Updater but it's not a tool used by the mainstream at the moment. So we're using Bash script. This script will updated the image to the Manifests Repo. For the GitHub repo we don't need any installation either.
@@ -348,9 +339,19 @@ Select Kind as "Secret text" as Github has moved away from ID and passwords to s
 ![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/ef7129e5-4b4b-4623-9986-792ed2e443ef)
 
 
+### Jenkins Restart
+
+Once you are done with the above steps, it is better to restart Jenkins.
+
+```
+http://<ec2-instance-public-ip>:8080/restart
+```
 
 
 
+
+
+# CD
 
 
 ## ArgoCD and Kubernets Cluster Installation
