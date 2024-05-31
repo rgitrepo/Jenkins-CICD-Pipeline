@@ -220,7 +220,8 @@ cd sonarqube-9.4.0.54424/bin/linux-x86-64/
 Hurray !! Now you can access the `SonarQube Server` on `http://<ip-address>:9000` 
 (Can use jenkins ip-address with port 9000)
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/a7fc43df-2dc1-44e6-9c11-9f24576fec1c)
+![6-sonarqube-login](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/a65e63a9-e56c-44cf-8c94-53cf6d1a830a)
+
 
 
 Ensure to add Inbound Rule that allows incoming traffic on port 9000 on the EC2 instance.
@@ -236,22 +237,23 @@ Default Values when the SonarQube server just started.
 
 It immediatey asks to update the password.
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/34cd9422-4566-4d8e-afc9-98fa0fb5a718)
+![7-sonarqube-password-change](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/10e5eb1c-bcd2-4bb0-ada4-4d6f88e76d16)
+
 
 ### SonarQube Authentication with Jenkins
 When Jenkins pipeline is going to run it will need to access SonarQube. We need Jenkins to be able to do that. 
 
 Under the A click on My Account.
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/8c0e36e9-eca8-473e-8c42-c2de36b0dea9)
+![8-sonarqube-authentication-1](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/8402b2ce-d4d4-4fd8-a0e7-022eea24b9fa)
 
-Then click on Security tab:
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/c75b4f45-0cb9-46a1-ba50-5fb9fe63298e)
+Then click on Security tab
 
 Entre token name as 'jenkins' and click Generate.
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/3dd78f5b-6e39-4915-bff6-6814b6faf490)
+![9-sonarqube-token](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/75bd5620-50c8-4754-895e-5dcf1e16425e)
+
 
 Copy the generated token.
 
