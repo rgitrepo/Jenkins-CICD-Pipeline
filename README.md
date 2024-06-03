@@ -113,6 +113,7 @@ Jenkins Installation is Successful. You can now starting using the Jenkins
 <img width="990" alt="Screenshot 2023-02-01 at 11 14 13 AM" src="https://user-images.githubusercontent.com/43399466/215961440-3f13f82b-61a2-4117-88bc-0da265a67fa7.png">
 
 
+
 ## Create Jenkins Pipeline and Code to Run the Pipeline using Jenkinsfile
 
 We can type the entire pipeline steps or have the steps in a Jenksfile and give its path. We already have a Jenkinsfile.
