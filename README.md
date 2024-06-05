@@ -23,29 +23,32 @@ Install Jenkins, configure Docker as agent, set up cicd, deploy applications to 
 
 # CI
 
-### Install Jenkins.
+## Continuous Integration (CI)
 
-Pre-Requisites:
- - Java (JDK)
+### Install Jenkins
 
-### Run the below commands to install Java and Jenkins
+#### Pre-Requisites
 
-Install Java
+- Java (JDK)
 
-```
+#### Run the Below Commands to Install Java and Jenkins
+
+**Install Java**
+
+```bash
 sudo apt update
 sudo apt install openjdk-11-jre -y
 ```
 
-Verify Java is Installed
+**Verify Java Installation**
 
-```
+```bash
 java -version
 ```
 
-Now, you can proceed with installing Jenkins
+**Install Jenkins**
 
-```
+```bash
 curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
@@ -55,12 +58,12 @@ sudo apt-get update
 sudo apt-get install jenkins -y
 ```
 
-**Note: ** By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by AWS. Open port 8080 in the inbound traffic rules as show below.
+**Note:** By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by AWS. Open port 8080 in the inbound traffic rules as shown below.
 
-- EC2 > Instances > Click on <Instance-ID>
-- In the bottom tabs -> Click on Security
-- Security groups
-- Add inbound traffic rules as shown in the image (you can just allow TCP 8080 as well, in my case, I allowed `All traffic`).
+1. **EC2 > Instances > Click on <Instance-ID>**
+2. **In the bottom tabs -> Click on Security**
+3. **Security groups**
+4. **Add inbound traffic rules**
 
 <img width="1187" alt="Screenshot 2023-02-01 at 12 42 01 PM" src="https://user-images.githubusercontent.com/43399466/215975712-2fc569cb-9d76-49b4-9345-d8b62187aa22.png">
 
