@@ -414,7 +414,7 @@ Whenever installing any Kubernetes Controller (AgoCD, FluxCD) it's advisable to 
 1. Install Operator Lifecycle Manager (OLM), a tool to help manage the Operators running on your cluster.
 
 ```
-$ curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.28.0/install.sh | bash -s v0.28.0
+curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.28.0/install.sh | bash -s v0.28.0
 ```
 
 2. Install the operator by running the following command:What happens when I execute this command?
