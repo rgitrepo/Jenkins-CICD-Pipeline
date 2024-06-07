@@ -70,7 +70,7 @@ sudo apt-get install jenkins -y
 
 **Login to Jenkins**
 
-http://<ec2-instance-public-ip-address>:8080
+http://ec2-instance-public-ip-address:8080
 
 1. **Run the command to copy the Jenkins Admin Password**
 
