@@ -162,11 +162,9 @@ Not needed as Maven in part of the Docker image. If Maven wasn't part of the ima
    - Go to Manage Jenkins > Plugins.
    - In the Available tab, search for "Docker Pipeline".
    - Select the plugin and click the Install button.
-   - Restart Jenkins after the plugin is installed (we'll restart after all plugins are installed)
    
 <img width="1392" alt="Screenshot 2023-02-01 at 12 17 02 PM" src="https://user-images.githubusercontent.com/43399466/215973898-7c366525-15db-4876-bd71-49522ecb267d.png">
 
-Wait for the Jenkins to be restarted.
 
 # SonarQube Pipeline Plugin
 ## Install the SonarQube plugin in Jenkins:
