@@ -615,7 +615,7 @@ Logged into ArgoCD successfully.
 
 Click on Create Application
 
-Application Name: e2e-cicd-pipeline   (note: name must be lowercase)
+Application Name: e2e-jenkins-pipeline-spring-boot-app   (note: name must be lowercase)
 
 Project Name: default
 
@@ -640,7 +640,8 @@ Namespace: default
 Create button press
 
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/3903f3d2-7ab1-4fbe-87c5-4e00933b7885)
+![image](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/15594fd5-ab6f-4edb-a885-46675b97922f)
+
 
 
 
