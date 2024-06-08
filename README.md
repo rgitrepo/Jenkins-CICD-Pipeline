@@ -60,14 +60,32 @@ These commands will install OpenJDK 17 and ensure that your system is using the 
 
 **Install Jenkins**
 
-```bash
-curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
-  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-  https://pkg.jenkins.io/debian binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
+```sh
+# Update the package index
+sudo apt update
+
+# Install OpenJDK 17
+sudo apt install openjdk-17-jre -y
+
+# Verify the installation of Java 17
+java -version
+
+# Add the Jenkins keyring and repository
+curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Update the package index
 sudo apt-get update
+
+# Install Jenkins
 sudo apt-get install jenkins -y
+
+# Start Jenkins
+sudo systemctl start jenkins
+
+# Enable Jenkins to start on boot
+sudo systemctl enable jenkins
+
 ```
 
 **Note:** By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by AWS. Open port 8080 in the inbound traffic rules as shown below.
