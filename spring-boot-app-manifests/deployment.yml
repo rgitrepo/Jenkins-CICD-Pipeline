@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: spring-boot-app
-        image: rgitrepo/ultimate-cicd:6
+        image: rgitrepo/ultimate-cicd:7
         ports:
         - containerPort: 8080
