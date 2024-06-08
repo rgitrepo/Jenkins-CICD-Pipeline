@@ -647,6 +647,5 @@ Create button press
 
 You can see 3 pods up.
 
-You can also see spring-boot-app-service which came up because I had left a service.yml file in the same folder as the deployment.yml file. 
 
 
