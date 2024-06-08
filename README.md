@@ -159,7 +159,7 @@ Not needed as Maven in part of the Docker image. If Maven wasn't part of the ima
 ## Install the Docker Pipeline plugin in Jenkins:
 
    - Log in to Jenkins.
-   - Go to Manage Jenkins > Manage Plugins.
+   - Go to Manage Jenkins > Plugins.
    - In the Available tab, search for "Docker Pipeline".
    - Select the plugin and click the Install button.
    - Restart Jenkins after the plugin is installed (we'll restart after all plugins are installed)
