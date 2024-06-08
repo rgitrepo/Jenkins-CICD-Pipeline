@@ -33,7 +33,7 @@ Install Jenkins, configure Docker as agent, set up cicd, deploy applications to 
 
 #### Run the Below Commands to Install Java and Jenkins
 
-To update your system to use Java 17 based on the `eclipse-temurin:17-jdk` Docker image, you would need to use a package that installs Java 17 on your machine. Since you've previously used `sudo apt update` and `sudo apt install openjdk-11-jre -y`, you can use similar commands to install OpenJDK 17.
+To update your system to use Java 17 based on the `eclipse-temurin:17-jdk` Docker image, you would need to use a package that installs Java 17 on your machine. 
 
 Here’s how you can do it on a Debian-based system (like Ubuntu):
 
