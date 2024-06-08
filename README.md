@@ -260,6 +260,7 @@ Entre token name as 'jenkins' and click Generate.
 
 Copy the generated token.
 
+### Credentials in Jenkins for SonarQube
 Go to Jenkins and click on Manage Genkins -> Credentials -> System -> Global credentials 
 Click on Add Credentials button
 
@@ -267,7 +268,7 @@ Under Kind select Secret text from the dropdown.
 
 Paste the generated credentials from SonarQube to Secrets here in Jenkins.
 
-ID can be named SonarQube.
+ID can be named sonarqube.
 
 
 ![10-sonarqube-credentials-in-jenkins](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/5b0905dd-e997-484c-9039-d0fff3b05a34)
