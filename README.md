@@ -1,42 +1,32 @@
+---
 
+# Jenkins CI/CD Pipeline on AWS EC2 with Docker, SonarQube, and GitHub Integration
 
 ## Installation on EC2 Instance
 
+![Jenkins CI/CD](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/66575891-edf8-4041-ada7-9b4fdab5ff5a)
 
+Install Jenkins, configure Docker as an agent, set up CI/CD, deploy applications to Kubernetes, and more.
 
-![image](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/66575891-edf8-4041-ada7-9b4fdab5ff5a)
-
-
-
-
-
-Install Jenkins, configure Docker as agent, set up cicd, deploy applications to k8s and much more.
-
-## AWS EC2 Instance
+## AWS EC2 Instance Setup
 
 - Go to AWS Console
-- Instances(running)
-- Launch instances
+- Navigate to `Instances (running)`
+- Click on `Launch instances`
 
-<img width="994" alt="Screenshot 2023-02-01 at 12 37 45 PM" src="https://user-images.githubusercontent.com/43399466/215974891-196abfe9-ace0-407b-abd2-adcffe218e3f.png">
+<img width="994" alt="Launch Instances" src="https://user-images.githubusercontent.com/43399466/215974891-196abfe9-ace0-407b-abd2-adcffe218e3f.png">
 
+# Continuous Integration (CI)
 
-# CI
+## Install Jenkins
 
-## Continuous Integration (CI)
-
-### Install Jenkins
-
-#### Pre-Requisites
+### Pre-Requisites
 
 - Java (JDK)
 
-#### Run the Below Commands to Install Java and Jenkins
+### Install Java and Jenkins
 
-To update your system to use Java 17 based on the `eclipse-temurin:17-jdk` Docker image, you would need to use a package that installs Java 17 on your machine. 
-
-
-**Install Jenkins**
+Run the following commands to install Java and Jenkins:
 
 ```sh
 # Update the package index
@@ -63,333 +53,270 @@ sudo systemctl start jenkins
 
 # Enable Jenkins to start on boot
 sudo systemctl enable jenkins
-
 ```
 
-**Note:** By default, Jenkins will not be accessible to the external world due to the inbound traffic restriction by AWS. Open port 8080 in the inbound traffic rules as shown below.
+**Note:** By default, Jenkins will not be accessible externally due to inbound traffic restrictions by AWS. Open port 8080 in the inbound traffic rules:
 
 1. **EC2 > Instances > Click on <Instance-ID>**
 2. **In the bottom tabs -> Click on Security**
 3. **Security groups**
 4. **Add inbound traffic rules**
 
-<img width="1187" alt="Screenshot 2023-02-01 at 12 42 01 PM" src="https://user-images.githubusercontent.com/43399466/215975712-2fc569cb-9d76-49b4-9345-d8b62187aa22.png">
+<img width="1187" alt="Add Inbound Traffic Rules" src="https://user-images.githubusercontent.com/43399466/215975712-2fc569cb-9d76-49b4-9345-d8b62187aa22.png">
 
+### Login to Jenkins
 
-**Login to Jenkins**
+Access Jenkins at `http://<ec2-instance-public-ip>:8080`
 
-http://ec2-instance-public-ip-address:8080
+1. **Retrieve the Jenkins Admin Password:**
 
-1. **Run the command to copy the Jenkins Admin Password**
-
-```bash
+```sh
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 
-2. **Copy the Administrator password to use when logging into Jenkins with EC2 IP and port 8080**
+2. **Copy the Administrator password and use it to log into Jenkins with EC2 IP and port 8080.**
 
-      
-<img width="1291" alt="Screenshot 2023-02-01 at 10 56 25 AM" src="https://user-images.githubusercontent.com/43399466/215959008-3ebca431-1f14-4d81-9f12-6bb232bfbee3.png">
+<img width="1291" alt="Jenkins Initial Setup" src="https://user-images.githubusercontent.com/43399466/215959008-3ebca431-1f14-4d81-9f12-6bb232bfbee3.png">
 
-### Check if Jenkins is running:
+### Verify Jenkins is Running
 
-```
+```sh
 ps -ef | grep jenkins
 ```
 
 Output:
-![image](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/888263bd-6ff0-43dd-9c9b-5e89b47d56a6)
 
+![Jenkins Running](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/888263bd-6ff0-43dd-9c9b-5e89b47d56a6)
 
-### Click on Install suggested plugins
+### Install Suggested Plugins
 
-<img width="1291" alt="Screenshot 2023-02-01 at 10 58 40 AM" src="https://user-images.githubusercontent.com/43399466/215959294-047eadef-7e64-4795-bd3b-b1efb0375988.png">
+1. **Click on `Install suggested plugins`**
 
-Wait for the Jenkins to Install suggested plugins
+<img width="1291" alt="Install Suggested Plugins" src="https://user-images.githubusercontent.com/43399466/215959294-047eadef-7e64-4795-bd3b-b1efb0375988.png">
 
-<img width="1291" alt="Screenshot 2023-02-01 at 10 59 31 AM" src="https://user-images.githubusercontent.com/43399466/215959398-344b5721-28ec-47a5-8908-b698e435608d.png">
+2. **Wait for Jenkins to install the suggested plugins.**
 
-Create First Admin User or Skip the step [If you want to use this Jenkins instance for future use-cases as well, better to create admin user]
+<img width="1291" alt="Installing Plugins" src="https://user-images.githubusercontent.com/43399466/215959398-344b5721-28ec-47a5-8908-b698e435608d.png">
 
-<img width="990" alt="Screenshot 2023-02-01 at 11 02 09 AM" src="https://user-images.githubusercontent.com/43399466/215959757-403246c8-e739-4103-9265-6bdab418013e.png">
+3. **Create First Admin User or Skip the step if you want to use this Jenkins instance for future use-cases.**
 
-Jenkins Installation is Successful. You can now starting using the Jenkins 
+<img width="990" alt="Create Admin User" src="https://user-images.githubusercontent.com/43399466/215959757-403246c8-e739-4103-9265-6bdab418013e.png">
 
-<img width="990" alt="Screenshot 2023-02-01 at 11 14 13 AM" src="https://user-images.githubusercontent.com/43399466/215961440-3f13f82b-61a2-4117-88bc-0da265a67fa7.png">
+4. **Jenkins Installation is Successful. You can now start using Jenkins.**
 
-
+<img width="990" alt="Jenkins Installation Successful" src="https://user-images.githubusercontent.com/43399466/215961440-3f13f82b-61a2-4117-88bc-0da265a67fa7.png">
 
 ## Create Jenkins Pipeline and Code to Run the Pipeline using Jenkinsfile
 
-We can type the entire pipeline steps or have the steps in a Jenksfile and give its path. We already have a Jenkinsfile.
-This file can have any name. Notice the capital 'F" in JenkinsFile name.
+### Create a New Pipeline
 
-Click on "+ New Item" to create a new Pipeline.
+1. **Click on `+ New Item` to create a new Pipeline.**
 
-![image](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/d5c3d155-fd3a-4ebc-a9d2-54d6695197b4)
-
+![New Pipeline](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/d5c3d155-fd3a-4ebc-a9d2-54d6695197b4)
 
 ### Specify the Jenkinsfile for the Pipeline
 
-Definition: Pipeline script from SCM
+1. **Definition:** Pipeline script from SCM
+2. **SCM:** Git
+3. **Repository URL:** `https://github.com/rgitrepo/Jenkins-CICD-Pipeline`
+4. **Credentials:** None (because this is a public repository)
+5. **Branch:** `main`
+6. **Script Path:** `spring-boot-app/Jenkinsfile`
 
-SCM: Git
+![Specify Jenkinsfile](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/581b04d9-1b21-4e66-8af8-c47840752020)
 
-Repository URL: https://github.com/rgitrepo/Jenkins-CICD-Pipeline
+![Jenkinsfile Path](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/afe1ef68-b2f5-4d61-97e2-3fc1ac4cb995)
 
-Credentials: None (because this is a public repository)
+# Jenkins Plugins
 
-Branch: Main
+## Docker Pipeline Plugin
 
-Script Path: spring-boot-app/JenkinsFile
+### Install Docker Pipeline Plugin in Jenkins
 
+1. **Log in to Jenkins.**
+2. **Go to `Manage Jenkins > Manage Plugins`.**
+3. **In the `Available` tab, search for "Docker Pipeline".**
+4. **Select the plugin and click the `Install` button.**
 
-![2-jenkins-jenkinsfile-path](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/581b04d9-1b21-4e66-8af8-c47840752020)
+<img width="1392" alt="Install Docker Pipeline Plugin" src="https://user-images.githubusercontent.com/43399466/215973898-7c366525-15db-4876-bd71-49522ecb267d.png">
 
+## SonarQube Pipeline Plugin
 
-![3-jenkins-jenkinsfile-path](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/afe1ef68-b2f5-4d61-97e2-3fc1ac4cb995)
+### Install SonarQube Plugin in Jenkins
 
+1. **Go to `Manage Jenkins > Manage Plugins`.**
+2. **In the `Available` tab, search for "SonarQube Scanner".**
+3. **Select the plugin and click the `Install` button.**
 
-
-# Maven Pipeline Plugin
-Not needed as Maven in part of the Docker image. If Maven wasn't part of the image we'd need to install the plugin here in Jenkins then. We can create our own images with Maven in it. Currently we're using the one Abhishek provided. To see the image stored at Docker Hub see the jenkinsFile.
-
-
-# Docker Pipeline Plugin
-## Install the Docker Pipeline plugin in Jenkins:
-
-   - Log in to Jenkins.
-   - Go to Manage Jenkins > Plugins.
-   - In the Available tab, search for "Docker Pipeline".
-   - Select the plugin and click the Install button.
-   
-<img width="1392" alt="Screenshot 2023-02-01 at 12 17 02 PM" src="https://user-images.githubusercontent.com/43399466/215973898-7c366525-15db-4876-bd71-49522ecb267d.png">
-
-
-# SonarQube Pipeline Plugin
-## Install the SonarQube plugin in Jenkins:
-
-   - Go to Manage Jenkins > Manage Plugins.
-   - In the Available tab, search for "SonarQube Scanner".
-   - Select the plugin and click the Install button.
-
-![4-sonarqube-scanner](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/37830462-7276-4c6a-9423-d042245db9e0)
-
+![Install SonarQube Plugin](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/37830462-7276-4c6a-9423-d042245db9e0)
 
 # SonarQube Installation on EC2 Instance
-It can be installed on any server. For an organization it probably will be an internal server and with a private IP address.
-For this project we'll install on the EC2 and use the public IP address to access it. 
-AWS will need connectivitiy to the SonarQube server. Installing on the same EC2 instance avoids the complexity of configuring the Network, VPC, Ingress, VPC Pairing etc used for communciation between SonarQube server and AWS that has Jenkins server.
 
-## Next Steps
+SonarQube can be installed on any server. For this project, we'll install it on an EC2 instance and use the public IP address to access it.
 
-### Configure a Sonar Server locally
+### Configure a SonarQube Server Locally
 
-```
+```sh
 sudo su -
-```
-```
 apt install unzip
-```
-```
 adduser sonarqube
 ```
 
-![5-sonarqube-on-ec2-instance](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/440b510e-e970-40fc-a79d-abc1c23b68d0)
+![SonarQube User](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/440b510e-e970-40fc-a79d-abc1c23b68d0)
 
+Use the below commands one by one while proceeding:
 
-Use the below commands one by one while proceeding.
-```
+```sh
 sudo su - sonarqube
-```
-```
 wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.4.0.54424.zip
-```
-```
 unzip *
-```
-```
 chmod -R 755 /home/sonarqube/sonarqube-9.4.0.54424
-```
-```
 chown -R sonarqube:sonarqube /home/sonarqube/sonarqube-9.4.0.54424
-```
-```
 cd sonarqube-9.4.0.54424/bin/linux-x86-64/
-```
-```
 ./sonar.sh start
 ```
 
-You can now access the `SonarQube Server` on `http://<ip-address of ec2>:9000` 
+You can now access the SonarQube Server at `http://<ec2-ip>:9000`
 
-![6-sonarqube-login](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/a65e63a9-e56c-44cf-8c94-53cf6d1a830a)
+![SonarQube Login](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/a65e63a9-e56c-44cf-8c94-53cf6d1a830a)
 
-
-
-Ensure to add Inbound Rule that allows incoming traffic on port 9000 on the EC2 instance.
-
-Note: Since the sonarqube was installed on the ec2 instance we use the public IP. We can also use private IP when an organization has special VPC for sonarqube server. In that case the network will need to be configured as sonarqube will need access to communicate. For ease we installed SonarQube server on the same EC2 virtual machine instance and it avoids configuration of the networking.
+**Ensure to add an inbound rule that allows incoming traffic on port 9000 on the EC2 instance.**
 
 ### Login to SonarQube Server
-Default Values when the SonarQube server just started.
 
- user: admin
- 
- pass: admin
+- **Default Username:** `admin`
+- **Default Password:** `admin`
 
-It immediatey asks to update the password.
+It immediately asks to update the password.
 
-![7-sonarqube-password-change](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/10e5eb1c-bcd2-4bb0-ada4-4d6f88e76d16)
-
+![Update SonarQube Password](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/10e5eb1c-bcd2-4bb0-ada4-4d6f88e76d16)
 
 ### SonarQube Authentication with Jenkins
-When Jenkins pipeline is going to run it will need to access SonarQube. We need Jenkins to be able to do that. 
 
-Under the A click on My Account.
+1. **Generate a SonarQube Token:**
+   - Click on your username in SonarQube and go to `
 
-![8-sonarqube-authentication-1](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/8402b2ce-d4d4-4fd8-a0e7-022eea24b9fa)
+My Account > Security`.
+   - Enter a token name (e.g., `jenkins`) and click `Generate`.
 
+![Generate SonarQube Token](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/75bd5620-50c8-4754-895e-5dcf1e16425e)
 
-Then click on Security tab
+2. **Copy the generated token.**
 
-Entre token name as 'jenkins' and click Generate.
+### Add SonarQube Credentials in Jenkins
 
-![9-sonarqube-token](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/75bd5620-50c8-4754-895e-5dcf1e16425e)
+1. **Go to `Manage Jenkins > Credentials > System > Global credentials (unrestricted)`.**
+2. **Click `Add Credentials`.**
+3. **Under `Kind`, select `Secret text` from the dropdown.**
+4. **Paste the generated token from SonarQube into the `Secret` field.**
+5. **Set `ID` to `sonarqube`.**
 
+![Add SonarQube Credentials](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/5b0905dd-e997-484c-9039-d0fff3b05a34)
 
-Copy the generated token.
+Click `Create`.
 
-### Credentials in Jenkins for SonarQube
-Go to Jenkins and click on Manage Genkins -> Credentials -> System -> Global credentials 
-Click on Add Credentials button
-
-Under Kind select Secret text from the dropdown.
-
-Paste the generated credentials from SonarQube to Secrets here in Jenkins.
-
-ID can be named sonarqube.
-
-
-![10-sonarqube-credentials-in-jenkins](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/5b0905dd-e997-484c-9039-d0fff3b05a34)
-
-
-
-Click Create
-
-![11-sonarqube-gloabal-cred](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/635c3fcc-38e4-43ac-897f-4d7d0415a995)
-
-
+![Global Credentials](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/635c3fcc-38e4-43ac-897f-4d7d0415a995)
 
 ## Docker Slave Configuration on EC2 Instance
 
-Run the below command to Install Docker
+### Install Docker
 
-Type 'exit' to get back to the EC2 instance from SonarQube server.
+Run the following commands to install Docker:
 
-```
+```sh
 sudo apt update
 sudo apt install docker.io -y
 ```
- 
-### Grant Jenkins user and Ubuntu user permission to Docker daemon.
 
-```
+### Grant Jenkins and Ubuntu Users Permission to Docker Daemon
+
+```sh
 sudo su - 
 usermod -aG docker jenkins
 usermod -aG docker ubuntu
 systemctl restart docker
 ```
 
-The docker agent configuration is now completed.
-
+The Docker agent configuration is now complete.
 
 ## Shell Script
-No installation needed. We also could user Argo Image Updater but it's not a tool used by the mainstream at the moment. So we're using Bash script. This script will updated the image to the Manifests Repo. For the GitHub repo we don't need any installation either.
 
+No installation needed. We also could use Argo Image Updater, but it's not a mainstream tool at the moment. So we're using a Bash script. This script will update the image in the Manifests Repo. For the GitHub repo, we don't need any installation either.
 
 ## Docker Hub Credentials for Jenkins
 
-Credentials of Docker Hub are needed on Jenkins so that from Jenkins the new image is automatically pushed to Docker Hub.
+### Add Docker Hub Credentials
 
+1. **Go to `Manage Jenkins > Credentials > System > Global credentials (unrestricted)`.**
+2. **Click `Add Credentials`.**
+3. **Under `Kind`, select `Username with password`.**
+4. **Enter your Docker Hub username and password.**
+5. **Set `ID` to `docker-cred` (ensure it matches the ID used in your Jenkinsfile).**
 
-Username is docker hub name and ID is 'docker-cred' which is also specified in the jenkinsFile. If this ID name is changed then jenkinsFile should also be updated to match the new name.
+![Add Docker Hub Credentials](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/1ad11189-8288-40ad-8708-b6a4dd498156)
 
-Kind: Username with password
+![Docker Hub Credentials](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/bbb829a1-1de7-4983-ad88-23b1cfd7ce8b)
 
-Username: rgitrepo (use your Docker Hub name)
+## GitHub Credentials for Jenkins
 
-Password: ********  (use your Docker Hub password)
+### Generate GitHub Token
 
-ID: docker-cred (same in Jenkisfile. If this ID name is changed then jenkinsFile should also be updated to match the new name.)
+1. **Go to `GitHub > Settings > Developer Settings > Personal access tokens > Tokens (classic) > Generate New Token (classic)`.**
+2. **Enter `jenkins` as the token name.**
 
+![Generate GitHub Token](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/38ef3ee8-442a-403b-aa84-ea732d91e046)
 
-![12-dockerhub-global-cred](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/1ad11189-8288-40ad-8708-b6a4dd498156)
+3. **Copy the generated token.**
 
+### Add GitHub Credentials in Jenkins
 
-![13-sonar-docker-creds](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/bbb829a1-1de7-4983-ad88-23b1cfd7ce8b)
+1. **Go to `Manage Jenkins > Credentials > System > Global credentials (unrestricted)`.**
+2. **Click `Add Credentials`.**
+3. **Under `Kind`, select `Secret text`.**
+4. **Paste the GitHub token into the `Secret` field.**
+5. **Set `ID` to `github`.**
 
+![Add GitHub Credentials](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/c7d2800d-fa01-43f6-b959-2b34972ccdfc)
 
-## Git Hub Credentials for Jenkins
-
-In git go to icon on top right and under it select Settings -> Developer Settings -> Personal access tokens -> Tokens (classic) > Generate New Token (classic) 
-
-In Note 'jenkins' as the name.
-
-
-![14-github-cred](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/38ef3ee8-442a-403b-aa84-ea732d91e046)
-
-
-copy the generated token.
-
-Go into Jenkins Dashboard -> Manage Jenkins -> Credentials -> System - Global credentials (unrestricted)
-
-Click on Add Credentials
-
-Kind: Secret text (Github has moved away from ID and passwords to secret tokens)
-
-Secret: ****** (paste the copied token)
-
-ID: github
-
-
-![15-github-cred](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/c7d2800d-fa01-43f6-b959-2b34972ccdfc)
-
-
-![16-sonar-docker-github-creds](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/69457a4a-0705-4837-9a86-32696ce62919)
-
-
+![Global Credentials](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/69457a4a-0705-4837-9a86-32696ce62919)
 
 ### Jenkins Restart
 
-Since the plugins and credentials have been updated in Jenkins it's time to restart it.
+Since the plugins and credentials have been updated in Jenkins, it's time to restart it.
 
-```
+```sh
 http://<ec2-instance-public-ip>:8080/restart
 ```
 
-### Update IP address of SonarQube on EC2 Instance
+### Update IP Address of SonarQube on EC2 Instance
 
-Go to the JenkinsFile and updated the ec2 ip address for SonarQube. 
+Go to the Jenkinsfile and update the EC2 IP address for SonarQube:
 
-    environment {
-        DOCKER_IMAGE = "rgitrepo/ultimate-cicd:${BUILD_NUMBER}"
-        SONAR_URL = "http://<ec2-ip>:9000"
-        GIT_REPO_NAME = "Jenkins-CICD-Pipeline"
-        GIT_USER_NAME = "rgitrepo"
-    }
+```groovy
+environment {
+    DOCKER_IMAGE = "rgitrepo/ultimate-cicd:${BUILD_NUMBER}"
+    SONAR_URL = "http://<ec2-ip>:9000"
+    GIT_REPO_NAME = "Jenkins-CICD-Pipeline"
+    GIT_USER_NAME = "rgitrepo"
+}
+```
 
 ### Run the Jenkins Pipeline
 
-Go into the Jenkins pipeline and click on 'Build Now'.
+Go into the Jenkins pipeline and click on `Build Now`.
 
-Most pipelines have small errors that need fixing before they run. If it's the case fix those errors.
+Most pipelines have small errors that need fixing before they run. If it's the case, fix those errors.
 
-### Verify the image has been pushed to Docker Hub
+### Verify the Image has been Pushed to Docker Hub
 
-Once the pipeline has run see if the image has been build and pushed to Docker Hub.
-- Go to docker hub account and look for the image.
-- It can also be checked on the EC2 instance by typing 'docker images'.
+Once the pipeline has run, check if the image has been built and pushed to Docker Hub:
+- Go to your Docker Hub account and look for the image.
+- It can also be checked on the EC2 instance by typing `docker images`.
+
+---
+
+This completes the setup for Jenkins CI/CD Pipeline on AWS EC2 with Docker, SonarQube, and GitHub Integration. If you encounter any issues, refer to the Jenkins, Docker, or SonarQube documentation or seek assistance.
+
 
 
 
