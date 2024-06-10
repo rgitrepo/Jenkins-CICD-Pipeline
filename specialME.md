@@ -1,6 +1,54 @@
----
-
 # Jenkins CI/CD Pipeline on AWS EC2 with Docker, SonarQube, and GitHub Integration
+
+## Table of Contents
+
+- [Installation on EC2 Instance](#installation-on-ec2-instance)
+- [AWS EC2 Instance Setup](#aws-ec2-instance-setup)
+- [Continuous Integration (CI)](#continuous-integration-ci)
+  - [Install Jenkins](#install-jenkins)
+    - [Pre-Requisites](#pre-requisites)
+    - [Install Java and Jenkins](#install-java-and-jenkins)
+    - [Login to Jenkins](#login-to-jenkins)
+    - [Verify Jenkins is Running](#verify-jenkins-is-running)
+    - [Install Suggested Plugins](#install-suggested-plugins)
+  - [Create Jenkins Pipeline and Code to Run the Pipeline using Jenkinsfile](#create-jenkins-pipeline-and-code-to-run-the-pipeline-using-jenkinsfile)
+    - [Create a New Pipeline](#create-a-new-pipeline)
+    - [Specify the Jenkinsfile for the Pipeline](#specify-the-jenkinsfile-for-the-pipeline)
+  - [Jenkins Plugins](#jenkins-plugins)
+    - [Docker Pipeline Plugin](#docker-pipeline-plugin)
+    - [SonarQube Pipeline Plugin](#sonarqube-pipeline-plugin)
+  - [SonarQube Installation on EC2 Instance](#sonarqube-installation-on-ec2-instance)
+    - [Configure a SonarQube Server Locally](#configure-a-sonarqube-server-locally)
+    - [Login to SonarQube Server](#login-to-sonarqube-server)
+    - [SonarQube Authentication with Jenkins](#sonarqube-authentication-with-jenkins)
+    - [Add SonarQube Credentials in Jenkins](#add-sonarqube-credentials-in-jenkins)
+  - [Docker Slave Configuration on EC2 Instance](#docker-slave-configuration-on-ec2-instance)
+    - [Install Docker](#install-docker)
+    - [Grant Jenkins and Ubuntu Users Permission to Docker Daemon](#grant-jenkins-and-ubuntu-users-permission-to-docker-daemon)
+  - [Shell Script](#shell-script)
+  - [Docker Hub Credentials for Jenkins](#docker-hub-credentials-for-jenkins)
+    - [Add Docker Hub Credentials](#add-docker-hub-credentials)
+  - [GitHub Credentials for Jenkins](#github-credentials-for-jenkins)
+    - [Generate GitHub Token](#generate-github-token)
+    - [Add GitHub Credentials in Jenkins](#add-github-credentials-in-jenkins)
+  - [Jenkins Restart](#jenkins-restart)
+  - [Update IP Address of SonarQube on EC2 Instance](#update-ip-address-of-sonarqube-on-ec2-instance)
+  - [Run the Jenkins Pipeline](#run-the-jenkins-pipeline)
+  - [Verify the Image has been Pushed to Docker Hub](#verify-the-image-has-been-pushed-to-docker-hub)
+- [Continuous Delivery (CD)](#continuous-delivery-cd)
+  - [Set Up Argo CD with GitHub](#set-up-argo-cd-with-github)
+    - [Prerequisites](#prerequisites)
+    - [Step 1: Install Minikube](#step-1-install-minikube)
+    - [Step 2: Install kubectl](#step-2-install-kubectl)
+    - [Step 3: Deploy Argo CD](#step-3-deploy-argo-cd)
+    - [Step 4: Access Argo CD](#step-4-access-argo-cd)
+    - [Step 5: Initial Login to Argo CD](#step-5-initial-login-to-argo-cd)
+    - [Step 6: Connect GitHub Repository to Argo CD](#step-6-connect-github-repository-to-argo-cd)
+      - [Create Argo CD Application](#create-argo-cd-application)
+      - [Using the Argo CD UI](#using-the-argo-cd-ui)
+      - [Using a YAML File](#using-a-yaml-file)
+
+---
 
 ## Installation on EC2 Instance
 
@@ -120,8 +168,9 @@ Output:
 2. **SCM:** Git
 3. **Repository URL:** `https://github.com/rgitrepo/Jenkins-CICD-Pipeline`
 4. **Credentials:** None (because this is a public repository)
-5. **Branch:** `main`
-6. **Script Path:** `spring-boot-app/Jenkinsfile`
+5. **Branch:** `main
+
+`6. **Script Path:**`spring-boot-app/Jenkinsfile`
 
 ![Specify Jenkinsfile](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/581b04d9-1b21-4e66-8af8-c47840752020)
 
@@ -194,9 +243,7 @@ It immediately asks to update the password.
 ### SonarQube Authentication with Jenkins
 
 1. **Generate a SonarQube Token:**
-   - Click on your username in SonarQube and go to `
-
-My Account > Security`.
+   - Click on your username in SonarQube and go to `My Account > Security`.
    - Enter a token name (e.g., `jenkins`) and click `Generate`.
 
 ![Generate SonarQube Token](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/75bd5620-50c8-4754-895e-5dcf1e16425e)
@@ -231,7 +278,7 @@ sudo apt install docker.io -y
 ### Grant Jenkins and Ubuntu Users Permission to Docker Daemon
 
 ```sh
-sudo su - 
+sudo su -
 usermod -aG docker jenkins
 usermod -aG docker ubuntu
 systemctl restart docker
@@ -310,22 +357,24 @@ Most pipelines have small errors that need fixing before they run. If it's the c
 ### Verify the Image has been Pushed to Docker Hub
 
 Once the pipeline has run, check if the image has been built and pushed to Docker Hub:
+
 - Go to your Docker Hub account and look for the image.
 - It can also be checked on the EC2 instance by typing `docker images`.
 
 ---
 
-This completes the setup for Jenkins CI/CD Pipeline on AWS EC2 with Docker, SonarQube, and GitHub Integration. If you encounter any issues, refer to the Jenkins, Docker, or SonarQube documentation or seek assistance.
+# Continuous Delivery (CD)
 
-# CD
-
-### Set Up Argo CD with GitHub
+## Set Up Argo CD with GitHub
 
 ---
 
 ## Prerequisites
 
-- An Ubuntu machine with at least 2 CPUs, 2GB of free memory, 20GB of free disk space, and internet connectivity.
+- An Ubuntu machine with at least 2 CPUs, 2GB of free memory, 20GB of free disk space,
+
+and internet connectivity.
+
 - Docker installed and running.
 - A GitHub repository with your Kubernetes manifests.
 
