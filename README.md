@@ -426,7 +426,7 @@ curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releas
 2. Install the operator by running the following command:What happens when I execute this command?
 
 ```
-$ kubectl create -f https://operatorhub.io/install/argocd-operator.yaml
+kubectl create -f https://operatorhub.io/install/argocd-operator.yaml
 ```
 
 This Operator will be installed in the "operators" namespace and will be usable from all namespaces in the cluster.
@@ -435,7 +435,7 @@ This Operator will be installed in the "operators" namespace and will be usable 
 3. After install, watch your operator come up using next command.
 
 ```
-$ kubectl get csv -n operators
+kubectl get csv -n operators
 ```
 
 To use it, checkout the custom resource definitions (CRDs) introduced by this operator to start using it.
@@ -448,7 +448,6 @@ To use it, checkout the custom resource definitions (CRDs) introduced by this op
 kubectl get pods -n operators
 ```
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/e38fdbc4-b083-4d3c-b23b-ef4428940949)
 
 
 
@@ -485,11 +484,15 @@ spec: {}
 
 Create a file with this code.
 
+To create the file and open vim use the below command.
+
 ```
 vim argocd-basic.yml
 ```
+When the editor is open paste the copied code here
 
-Then apply this to kubernetes
+
+Then apply this to newly created yaml file.
 ```
 kubectl apply -f argocd-basic.yml
 ```
@@ -504,7 +507,7 @@ Note: we can also install using Helm Charts but it's much better to learn how to
 kubectl get pods
 ```
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/c0b83e7d-f74c-45c6-ae41-53254de4c1f4)
+
 
 ArgoCD workloads are getting created.
 
@@ -514,7 +517,7 @@ ArgoCD workloads are getting created.
 kubectl get svc
 ```
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4e3c843f-313b-4223-9f8f-19d1f6fdc2e9)
+
 
 example-argocd-server service needs to change from ClusterIP to NodePort.
 
@@ -522,10 +525,10 @@ example-argocd-server service needs to change from ClusterIP to NodePort.
 kubectl edit svc example-argocd-server
 ```
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/ca989fa0-aef1-4982-9382-0b1abc95a901)
 
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/f1ac9fac-b895-44d3-8573-67fd73d9b02f)
+
+
 
 
 Check if the change took place
@@ -534,7 +537,7 @@ Check if the change took place
 kubectl get svc
 ```
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4d8edd74-9904-4edd-9906-173fb4776032)
+
 
 To execute it on browser minikube offers and automatic service. 
 
@@ -548,7 +551,7 @@ Minikube will generate a url using which we can access using browser. It's done 
 minikube service list
 ```
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/d9cbe5c0-d937-42cf-846f-bdcc869cc7a4)
+
 
 
 Before accessing via browser ensure the pods are up and running
