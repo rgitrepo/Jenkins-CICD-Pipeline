@@ -1,3 +1,4 @@
+---
 
 # Jenkins CI/CD Pipeline on AWS EC2 with Docker, SonarQube, and GitHub Integration
 
@@ -316,243 +317,205 @@ Once the pipeline has run, check if the image has been built and pushed to Docke
 
 This completes the setup for Jenkins CI/CD Pipeline on AWS EC2 with Docker, SonarQube, and GitHub Integration. If you encounter any issues, refer to the Jenkins, Docker, or SonarQube documentation or seek assistance.
 
+# CD
 
+### Set Up Argo CD with GitHub
 
+---
 
+## Prerequisites
 
-## Continuous Deployment (CD)
+- An Ubuntu machine with at least 2 CPUs, 2GB of free memory, 20GB of free disk space, and internet connectivity.
+- Docker installed and running.
+- A GitHub repository with your Kubernetes manifests.
 
-### Shell Script
+## Step 1: Install Minikube
 
-No installation needed. We also could use Argo Image Updater, but it's not a tool used by the mainstream at the moment. So we're using a Bash script. This script will update the image to the Manifests Repo. For the GitHub repo, we don't need any installation either.
+1. **Install Dependencies:**
 
-## Docker Hub Credentials for Jenkins
+   ```sh
+   sudo apt-get update
+   sudo apt-get install -y apt-transport-https ca-certificates curl
+   ```
 
-**Credentials Needed for Jenkins to Update the Docker Image on Docker Hub**
+2. **Install Docker:**
 
-The username is the Docker Hub name, and the ID is 'docker-cred', which is also specified in the Jenkinsfile. If this ID name is changed, then the Jenkinsfile should also be updated to match the new name.
+   ```sh
+   sudo apt-get install -y docker.io
+   sudo systemctl enable docker
+   sudo systemctl start docker
+   ```
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/40fc834e-de96-4c06-a748-f934eb8b6c83)
+3. **Download Minikube:**
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4645fd92-fe45-41f5-b666-06501dd3d800)
+   ```sh
+   curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+   sudo install minikube-linux-amd64 /usr/local/bin/minikube
+   ```
 
-## GitHub Credentials for Jenkins
+4. **Start Minikube:**
+   ```sh
+   minikube start --driver=docker
+   ```
 
-1. **In GitHub, go to Settings -> Developer Settings -> Personal Access Tokens -> Tokens (classic) -> Generate New Token (classic)**
+## Step 2: Install kubectl
 
-2. **In Note, type 'jenkins' as the name**
+1. **Download kubectl:**
 
-3. **Copy the Generated Token**
+   ```sh
+   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+   chmod +x kubectl
+   sudo mv kubectl /usr/local/bin/
+   ```
 
-4. **In Jenkins, go to Manage Jenkins -> Credentials -> System -> Global Credentials (unrestricted)**
+2. **Verify kubectl Installation:**
+   ```sh
+   kubectl version --client
+   ```
 
-5. **Click on Add Credentials**
+## Step 3: Deploy Argo CD
 
-6. **Select Kind as "Secret Text" as GitHub has Moved Away from ID and Passwords to Secret Tokens**
+1. **Create Namespace for Argo CD:**
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/20a6f8ae-897b-4010-a2d4-f098a16926b2)
+   ```sh
+   kubectl create namespace argocd
+   ```
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/ef7129e5-4b4b-4623-9986-792ed2e443ef)
+2. **Apply Argo CD Installation Manifest:**
 
-## ArgoCD and Kubernetes Cluster Installation
+   ```sh
+   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+   ```
 
-We're installing Kubernetes on a local machine (laptop) instead of an EC2 instance to save costs.
+3. **Change Service Type to NodePort:**
 
-**Go to this Website to Install MiniKube:** [Minikube Installation](https://minikube.sigs.k8s.io/docs/start/)
+   ```sh
+   kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+   ```
 
-**Start Hyper-V on Your Windows Machine by Going into Settings and Selecting a Checkbox**
+4. **Verify Argo CD Pods:**
+   ```sh
+   kubectl get pods -n argocd
+   ```
 
-### Kubernetes Operators and Controllers
+## Step 4: Access Argo CD
 
-Whenever installing any Kubernetes Controller (ArgoCD, FluxCD), it's advisable to use Kubernetes Operators. Kubernetes Operators make installation and Operator Lifecycle Management (OLM) of Kubernetes Controllers significantly easier. Operators allow easy updates, version control, and telemetry. They also have some default configurations out of the box. We'll be using Argo CD here.
+1. **Get the NodePort Assigned to Argo CD:**
 
-1. **Go to Operator Hub (operatorhub.io) and Follow the Instructions to Install ArgoCD**
+   ```sh
+   kubectl get svc argocd-server -n argocd
+   ```
 
-2. **To Install ArgoCD, Which is a Kubernetes Controller, First an Operator (OLM) is Installed to Manage This or Any Other Controller Installations**
+   Note the `NodePort` value, e.g., `30323`.
 
-3. **Then ArgoCD Installed**
+2. **Get Minikube IP:**
 
-**Install on Kubernetes**
+   ```sh
+   minikube ip
+   ```
 
-1. **Install Operator Lifecycle Manager (OLM), a Tool to Help Manage the Operators Running on Your Cluster**
+   Note the Minikube IP, e.g., `192.168.49.2`.
 
-```bash
-curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.28.0/install.sh | bash -s v0.28.0
-```
+3. **Form the Argo CD URL:**
+   Combine the Minikube IP and the NodePort to form the URL:
 
-2. **Install the Operator by Running the Following Command**
+   ```
+   http://<minikube_ip>:<node_port>
+   ```
 
-```bash
-kubectl create -f https://operatorhub.io/install/argocd-operator.yaml
-```
+   Example:
 
-This Operator will be installed in the "operators" namespace and will be usable from all namespaces in the cluster.
+   ```
+   http://192.168.49.2:30323
+   ```
 
-3. **After Installation, Watch Your Operator Come Up Using the Next Command**
+4. **Access Argo CD in Browser:**
+   Open your web browser and navigate to the Argo CD URL.
 
-```bash
-kubectl get csv -n operators
-```
+## Step 5: Initial Login to Argo CD
 
-To use it, check out the custom resource definitions (CRDs) introduced by this operator to start using it.
+1. **Retrieve the Admin Password:**
+   The initial password for the `admin` user is stored in a Kubernetes secret. Retrieve it with the following command:
 
-**Check for Operators Up and Running**
+   ```sh
+   kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 --decode
+   ```
 
-```bash
-kubectl get pods -n operators
-```
+2. **Login to Argo CD:**
+   - Username: `admin`
+   - Password: (use the password retrieved from the previous step)
 
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/e38fdbc4-b083-4d3c-b23b-ef4428940949)
+## Step 6: Connect GitHub Repository to Argo CD
 
-### Run the Jenkins Pipeline
+### Create Argo CD Application
 
-**Go into the Jenkins Pipeline and Click on 'Build Now'**
+You need to create an Argo CD application that points to your GitHub repository. This can be done via the Argo CD UI or by applying a YAML file.
 
-Most pipelines have small errors that need fixing before they run. If that's the case, fix those errors.
+### Using the Argo CD UI
 
-**Verify the Image Has Been Pushed to Docker Hub**
+1. **Open Argo CD UI:**
+   Access the Argo CD web interface using the URL you formed earlier.
 
-- **Go to Docker Hub Account and Look for the Image**
-- **It Can Also be Checked on the EC2 Instance by Typing 'docker images'**
+2. **Create a New Application:**
 
-## Deploy Cluster on Kubernetes Using ArgoCD
+   - Click on `New App`.
+   - Fill in the application details:
+     - **Application Name:** `e2e-jenkins-pipeline-spring-boot-app`
+     - **Project:** `default`
+     - **Sync Policy:** Automatic (if you want Argo CD to automatically sync the app)
+     - **Repository URL:** `https://github.com/rgitrepo/Jenkins-CICD-Pipeline`
+     - **Revision:** `HEAD`
+     - **Path:** `spring-boot-app-manifests`
+     - **Cluster URL:** `https://kubernetes.default.svc`
+     - **Namespace:** `default`
 
-### Minikube Status
+3. **Create the Application:**
+   Click `Create` to finish setting up the application.
 
-**Check the Status of Minikube on Your Personal Machine (That's Where We Installed it for This Project)**
+### Using a YAML File
 
-```bash
-minikube status
-```
+Alternatively, you can create a YAML file for the application and apply it using `kubectl`.
 
-**Go to the ArgoCD Documentation on argo-cd-operator.readthedocs.io**
+1. **Create the YAML File:**
+   Save the following content to a file named `argocd-application.yaml`:
 
-Usage -> Basics
+   ```yaml
+   apiVersion: argoproj.io/v1alpha1
+   kind: Application
+   metadata:
+     name: e2e-jenkins-pipeline-spring-boot-app
+     namespace: argocd
+   spec:
+     project: default
+     source:
+       repoURL: "https://github.com/rgitrepo/Jenkins-CICD-Pipeline"
+       targetRevision: HEAD
+       path: spring-boot-app-manifests
+     destination:
+       server: "https://kubernetes.default.svc"
+       namespace: default
+     syncPolicy:
+       automated:
+         prune: true
+         selfHeal: true
+   ```
 
-**Copy the Example Code at the Top**
+2. **Apply the YAML File:**
+   Use `kubectl` to create the application:
 
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: ArgoCD
-metadata:
-  name: example-argocd
-  labels:
-    example: basic
-spec: {}
-```
+   ```sh
+   kubectl apply -f argocd-application.yaml
+   ```
 
-**Create a File with This Code**
+3. **Verify the Application:**
+   Check the status of the newly created application in Argo CD:
 
-```bash
-vim argocd-basic.yml
-```
+   ```sh
+   kubectl get applications -n argocd
+   ```
 
-**Then Apply This to Kubernetes**
+---
 
-```bash
-kubectl apply -f argocd-basic.yml
-```
+By following these steps, you will have Argo CD set up and configured to manage your Kubernetes resources using manifests stored in a GitHub repository. If you encounter any issues, refer to the Argo CD documentation or seek assistance.
 
-**For Windows Machine**
-
-```bash
-kubectl apply -f "C:\path\argocd-basic.yml"
-```
-
-**Check if the Change Took Place**
-
-```bash
-kubectl get svc
-```
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/4d8edd74-9904-4edd-9906-173fb4776032)
-
-**To Execute it on the Browser, Minikube Offers an Automatic Service**
-
-```bash
-minikube service example-argocd-server
-```
-
-Minikube will generate a URL using which we can access using the browser. It's done by doing some port forwarding.
-
-```bash
-minikube service list
-```
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/d9cbe5c0-d937-42cf-846f-bdcc869cc7a4)
-
-**Before Accessing via the Browser Ensure the Pods are Up and Running**
-
-```bash
-kubectl get pods
-```
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/fcc53200-84da-484d-929d-32f2a7ccdd2a)
-
-### Access ArgoCD via URL
-
-**Use the URL to Access ArgoCD via the Browser**
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/11c7ee85-adac-484b-8ab0-d90fd13644bc)
-
-**Username and Password are Needed**
-
-- **Username:
-
- admin**
-- **For Password Use the Command**
-
-```bash
-kubectl get secret
-```
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/cee29984-2235-49ca-9881-caad09b8509e)
-
-ArgoCD stores the secret in example-argocd-cluster. To get it.
-
-```bash
-kubectl edit secret example-argocd-cluster
-```
-
-**Copy the Password**
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/6cdc8667-5503-4823-9aba-83bdc244c758)
-
-Kubernetes secrets are not in plain text format but base64 encrypted. To get the password, they need to be decrypted first.
-
-```bash
-echo copied_password_goes_here | base64 -d
-```
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/53d49959-98f2-4893-b86f-4661741b70eb)
-
-**Copy the Password and Paste it into the Password Field on ArgoCD Login**
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/e8e28c09-b75b-4509-b4e5-d32c733723ec)
-
-**Logged into ArgoCD Successfully**
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/8eb254cb-0c3e-4116-b563-1cd9a69af42d)
-
-### Configure ArgoCD
-
-**Click on Create Application**
-
-- **Application Name: e2e-cicd-pipeline** (Note: name must be lowercase)
-- **Project Name: default**
-- **Sync Policy: Automatic**
-- **Repository URL: https://github.com/rgitrepo/Jenkins-CICD-Pipeline**
-- **Path: spring-boot-app-manifests** (Only the folder that contains the YAML file is given)
-
-**DESTINATION**
-
-- **Cluster URL: https://kubernetes.default.svc**
-- **Namespace: default**
-
-**Click Create**
-
-![image](https://github.com/rgitrepo/Jenkins-Zero-To-Hero/assets/77811423/3903f3d2-7ab1-4fbe-87c5-4e00933b7885)
-
-**You Can See 3 Pods Up**
-
-**You Can Also See spring-boot-app-service, Which Came Up Because I Had Left a service.yml File in the Same Folder as the deployment.yml File**
+![image](https://github.com/rgitrepo/Jenkins-CICD-Pipeline/assets/77811423/99daa71d-6302-4311-84e1-0db5db4d58b3)
